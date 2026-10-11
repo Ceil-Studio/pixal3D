@@ -1,0 +1,25 @@
+services:
+  pixal3d:
+    build: .
+    container_name: pixal3d_app
+    ports:
+      - "7860:7860"
+    # HF_TOKEN dans .env (compte ayant accepté la licence de briaai/RMBG-2.0)
+    env_file: .env
+    environment:
+      # Low-VRAM fait des allers-retours CPU<->GPU des modèles : on force glibc à
+      # allouer les gros tenseurs en mmap pour rendre la RAM à l'OS (sinon OOM sur 31 Go)
+      - MALLOC_MMAP_THRESHOLD_=1048576
+      - MALLOC_TRIM_THRESHOLD_=1048576
+      # Rendus et GLB sont écrits dans tmp/ : gradio 6 ne les sert pas sans ça (403)
+      - GRADIO_ALLOWED_PATHS=/workspace/Pixal3D/tmp
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      - ~/.cache/torch:/root/.cache/torch
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

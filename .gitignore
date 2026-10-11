@@ -1,0 +1,5 @@
+.env
+backup-*/
+*.log
+Dockerfile.bak
+test_out/

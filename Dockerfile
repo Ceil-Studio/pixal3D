@@ -20,7 +20,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LOW_VRAM=1
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git wget build-essential cmake ninja-build \
+        git wget build-essential vim cmake ninja-build \
         python3 python3-dev python3-pip python-is-python3 \
         libgl1 libglib2.0-0 libjpeg-dev \
     && rm -rf /var/lib/apt/lists/*
